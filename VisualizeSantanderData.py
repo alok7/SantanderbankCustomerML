@@ -1,8 +1,6 @@
 '''
 var38 var15, are important features.
 So we would lay much emphasis on analysis of these two features
-var15 is the age of the customer -- according to kaggle post
-
 '''
 
 
@@ -132,43 +130,60 @@ class createMap:
  
  def Hist(self, attr='var38'):
   self.train[attr].hist(bins=1000)
-  plt.title(' ')
-  plt.show()
+  plt.title(' Histogram of ' + str(attr))
+  plt.savefig(' Histogram of ' + str(attr))
+  plt.close()
+  # plt.show()
  
  def LogHist(self, attr='var38'):
   self.train[attr].map(np.log).hist(bins=700)
-  plt.title(' ')
-  plt.show()
+  plt.title('Log Histogram of ' + str(attr))
+  plt.savefig('Log Histogram of ' + str(attr))
+  plt.close()
+  # plt.show()
  
  '''Find most common value usingvalue_counts()'''
  def LogHistExcludingCommonValue(self, attr='var38'):
   self.train.loc[~np.isclose(self.train[attr], 117310.979016), attr].map(np.log).hist(bins=100)
   plt.title(' ')
-  plt.show()
+  # plt.show()
  
  # Let's look at the density of the age of happy/unhappy customers
  def densityPlot(self, attr='var15'):
   sns.FacetGrid(self.train, hue="TARGET", size=6).map(sns.kdeplot, attr).add_legend()
   plt.title('Unhappy customers are older than happy ones')
-  plt.show()
+  plt.savefig('Unhappy customers are older than happy ones')
+  plt.close()
+  # plt.show()
 
  def scatterPlot(self, attr1= 'var38', attr2='var15'):
   sns.FacetGrid(self.train, hue="TARGET", size=10).map(plt.scatter, attr1, attr2).add_legend()
-  plt.title('Scatter plot')
-  plt.show()
+  plt.title('Scatter plot between ' + str(attr1) + str(attr2))
+  plt.savefig('Scatter plot between ' + str(attr1) + str(attr2))
+  plt.close()
+  # plt.show()
 
  def scatterLogPlot(self, attr1= 'var38', attr2='var15'):
   sns.FacetGrid(self.train, hue="TARGET", size=10).map(plt.scatter, "logvar38", "var15").add_legend()
   plt.ylim([0,120])
-  plt.title('Scatter Log plot')
-  plt.show()
+  plt.title('Scatter Log plot between ' + str(attr1) + str(attr2))
+  plt.savefig('Scatter Log plot between ' + str(attr1) + str(attr2))
+  plt.close()
+  # plt.show()
  
  def pairPlot(self, lst = ['var15','var36','TARGET']):
   # Each variable in lst is along y-axis
   sns.pairplot(self.train[lst], hue="TARGET", size=2, diag_kind="kde")
   plt.title(' ')
-  plt.show()
-
+  plt.savefig('Pairwise plot')
+  plt.close()
+  # plt.show()
+ def heatMap(self, data):
+  sns.heatmap(data)
+  plt.title(' HeatMap of covariance Matrix ')
+  plt.savefig('Covariance Matrix')
+  plt.close()
+  # plt.show()
 #------------------------------------------------------------------#
 #------------------------------------------------------------------#
 #------------------Class for feature selection---------------------#
@@ -202,12 +217,12 @@ class featureSelection:
 #------------------------------------------------------------------#
 #------------------------------------------------------------------#
 
-if __name__== '__main__':
- 
+# if __name__== '__main__':
+def executethisModule(): 
  #-------------------------------------------------------------
- # data = loadData('train.csv')
+ data = loadData('train.csv')
  # partial_data = data.loadCSVFewRows(10000)
- # full_data = data.loadCSVFull()
+ full_data = data.loadCSVFull()
  print("Module for all the Santander Data visualization")
  #---------------------------------------------------------------
  # features_ = featureSelection(partial_data)
@@ -224,9 +239,10 @@ if __name__== '__main__':
  # plt.scatter(df['var38'], df['var15'])
  # plt.show()
  #---------------------------------------------------------------
- # graphics_ = createMap(full_data)
- # graphics_.Hist('var38')
- # graphics_.LogHist('var38')
- # graphics_.densityPlot('var15') 
- # graphics_.scatterPlot('var38', 'var15')
- # graphics_.pairPlot(['var15','var36','TARGET'])
+ graphics_ = createMap(full_data)
+ graphics_.Hist('var38')
+ graphics_.LogHist('var38')
+ graphics_.densityPlot('var15') 
+ graphics_.scatterPlot('var38', 'var15')
+ graphics_.pairPlot(['var15','var36','TARGET'])
+ # graphics_.heatMap(full_data)
